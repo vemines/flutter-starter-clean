@@ -1,5 +1,13 @@
 # flutter_starter_clean
 
+<!-- TODO: -->
+
+firebase emulators:start --import=./firestore --export-on-exit=./firestore --log-level=error
+
+<!--  -->
+
+A Starter Project for develop Flutter.
+
 ## Demo video
 
  <video width="640" height="360" controls>
@@ -8,16 +16,27 @@
   
 ## About
 
-This project is a Flutter starter template implementing **Clean Architecture** with **BLoC** (Business Logic Component) pattern for state management. It demonstrates scalable structure for building Flutter applications with **up-to-date** 3rd package. Datasource intergrate with mock backend running with **json_server** or **emulator firebase**.
+This project is a Flutter starter template implementing **Clean Architecture** with **BLoC**, **Provider** for state management. It demonstrates scalable structure for building Flutter applications with **up-to-date** 3rd package. Datasource intergrate with mock backend with **json_server**, **emulator firebase**.
 
 ## Variant
 
 **[bloc-feature-api.rar](lib/bloc-feature-api.rar)**: State management: bloc, folder structor: Features base, Data source: Api (json server)
 
-**[bloc-feature-api.rar](lib/bloc-layer-api.rar)**: State management: bloc, folder structor: Layer base, Data source: Api (json server)
+**[bloc-layer-api.rar](lib/bloc-layer-api.rar)**: State management: bloc, folder structor: Layer base, Data source: Api (json server)
 
-**provider-feature/layer-api.rar**: Work in process
+**[provider-feature-api.rar](lib/_variants/provider-feature-api.rar)**: State management: provider, folder structor: Features base, Data source: Api (json server)
+
+**[provider-layer-api.rar](lib/_variants/provider-layer-api.rar)**: State management: provider, folder structor: Layer base, Data source: Api (json server)
+
 **bloc/provider-feature/layer-firebase.rar**: Work in process
+
+## How to use variants
+
+1. Make sure you have **DELETE ALL files/folders** in compressfile
+2. Copy to **lib**: Folder (**app, configs, core, features**), File (**injection_container.dart**)
+3. Copy to **root**: Folder(**test**)
+4. In **test** folder: Rename "flutter_starter_clean" to "your_project_package_name"
+5. Copy nessary package in **pubspec.yaml** to your "pubspec.yaml" file. Check [Packages Used](#packages-used).
 
 ## Process
 
@@ -33,7 +52,11 @@ This project is a Flutter starter template implementing **Clean Architecture** w
 
 ## Packages Used
 
-go_router, flutter_bloc, shared_preferences, flutter_secure_storage, get_it, dio, equatable, dartz, logger, cached_network_image, internet_connection_checker_plus, path_provider, google_fonts
+Required have: get_it, dio, equatable, dartz, logger, path_provider
+
+Can find relate package: cached_network_image, shared_preferences, go_router, internet_connection_checker_plus, flutter_secure_storage, google_fonts
+
+State manager: flutter_bloc, provider
 
 | Package                            | Description                                                                                                                                         |
 | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -76,6 +99,13 @@ go_router, flutter_bloc, shared_preferences, flutter_secure_storage, get_it, dio
     cd json-server
     npm run gen
     npm run dev     or npm start
+
+    ```
+
+**Run Firestore (Make sure you install it)**
+
+    ```bash
+    firebase emulators:start --import=./firestore --export-on-exit=./firestore
     ```
 
 4.  **Run the application (choose your flavor):**

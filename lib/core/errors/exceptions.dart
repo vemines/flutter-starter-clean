@@ -1,9 +1,6 @@
-import 'package:dio/dio.dart';
-
 import '../constants/constants.dart';
 import 'failures.dart';
 
-part 'dio_exception_handle.dart';
 part 'repository_exception_handle.dart';
 
 class ServerException implements Exception {

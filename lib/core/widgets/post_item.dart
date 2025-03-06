@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../features/post/domain/entities/post_entity.dart';
+import '../../features/entities/post/post_entity.dart';
 import '../extensions/build_content_extensions.dart';
 import '../extensions/num_extension.dart';
 import '../extensions/widget_extensions.dart';

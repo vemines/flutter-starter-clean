@@ -1,53 +1,51 @@
-import 'package:dio/dio.dart';
+// lib/injection_container.dart
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Import FirebaseAuth
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'app/flavor.dart';
 import 'app/logs.dart';
 import 'core/network/network_info.dart';
-import 'features/auth/data/datasources/auth_local_data_source.dart';
-import 'features/auth/data/datasources/auth_remote_data_source.dart';
-import 'features/auth/data/repositories/auth_repository_impl.dart';
-import 'features/auth/domain/repositories/auth_repository.dart';
-import 'features/auth/domain/usecases/get_logged_in_user_usecase.dart';
-import 'features/auth/domain/usecases/login_usecase.dart';
-import 'features/auth/domain/usecases/logout_usecase.dart';
-import 'features/auth/domain/usecases/register_usecase.dart';
-import 'features/auth/domain/usecases/update_password_usecase.dart';
-import 'features/auth/presentation/blocs/auth_bloc.dart';
-import 'features/comment/data/datasources/comment_remote_data_source.dart';
-import 'features/comment/data/repositories/comment_repository_impl.dart';
-import 'features/comment/domain/repositories/comment_repository.dart';
-import 'features/comment/domain/usecases/add_comment_usecase.dart';
-import 'features/comment/domain/usecases/delete_comment_usecase.dart';
-import 'features/comment/domain/usecases/get_comments_by_post_id_usecase.dart';
-import 'features/comment/domain/usecases/update_comment_usecase.dart';
-import 'features/comment/presentation/blocs/comment_bloc.dart';
-import 'features/post/data/datasources/post_remote_data_source.dart';
-import 'features/post/data/repositories/post_repository_impl.dart';
-import 'features/post/domain/repositories/post_repository.dart';
-import 'features/post/domain/usecases/create_post_usecase.dart';
-import 'features/post/domain/usecases/delete_post_usecase.dart';
-import 'features/post/domain/usecases/get_all_posts_usecase.dart';
-import 'features/post/domain/usecases/get_bookmarked_posts_usecase.dart';
-import 'features/post/domain/usecases/get_post_by_id_usecase.dart';
-import 'features/post/domain/usecases/get_posts_by_user_id_usecase.dart';
-import 'features/post/domain/usecases/search_posts_usecase.dart';
-import 'features/post/domain/usecases/update_post_usecase.dart';
-import 'features/post/presentation/blocs/post_bloc.dart';
-import 'features/user/data/datasources/user_remote_data_source.dart';
-import 'features/user/data/repositories/user_repository_impl.dart';
-import 'features/user/domain/repositories/user_repository.dart';
-import 'features/user/domain/usecases/bookmark_post_usecase.dart';
-import 'features/user/domain/usecases/get_all_users_usecase.dart';
-import 'features/user/domain/usecases/get_user_by_id_usecase.dart';
-import 'features/user/domain/usecases/get_user_detail_usecase.dart';
-import 'features/user/domain/usecases/update_friend_list_usecase.dart';
-import 'features/user/domain/usecases/update_user_usecase.dart';
-import 'features/user/presentation/blocs/user_bloc.dart';
-import 'features/user/presentation/blocs/user_detail_bloc.dart';
+
+import 'features/datasources/auth/auth_local_data_source.dart';
+import 'features/datasources/auth/auth_remote_data_source.dart';
+import 'features/datasources/comment/comment_remote_data_source.dart';
+import 'features/datasources/post/post_remote_data_source.dart';
+import 'features/datasources/user/user_remote_data_source.dart';
+import 'features/repositories/auth/auth_repository.dart';
+import 'features/repositories/comment/comment_repository.dart';
+import 'features/repositories/post/post_repository.dart';
+import 'features/repositories/user/user_repository.dart';
+import 'features/usecases/auth/get_logged_in_user_usecase.dart';
+import 'features/usecases/auth/login_usecase.dart';
+import 'features/usecases/auth/logout_usecase.dart';
+import 'features/usecases/auth/register_usecase.dart';
+import 'features/usecases/auth/update_password_usecase.dart';
+import 'features/usecases/comment/add_comment_usecase.dart';
+import 'features/usecases/comment/delete_comment_usecase.dart';
+import 'features/usecases/comment/get_comments_by_post_id_usecase.dart';
+import 'features/usecases/comment/update_comment_usecase.dart';
+import 'features/usecases/post/create_post_usecase.dart';
+import 'features/usecases/post/delete_post_usecase.dart';
+import 'features/usecases/post/get_all_posts_usecase.dart';
+import 'features/usecases/post/get_bookmarked_posts_usecase.dart';
+import 'features/usecases/post/get_post_by_id_usecase.dart';
+import 'features/usecases/post/get_posts_by_user_id_usecase.dart';
+import 'features/usecases/post/search_posts_usecase.dart';
+import 'features/usecases/post/update_post_usecase.dart';
+import 'features/usecases/user/bookmark_post_usecase.dart';
+import 'features/usecases/user/get_all_users_usecase.dart';
+import 'features/usecases/user/get_user_by_id_usecase.dart';
+import 'features/usecases/user/get_user_detail_usecase.dart';
+import 'features/usecases/user/update_friend_list_usecase.dart';
+import 'features/usecases/user/update_user_usecase.dart';
+import 'features/blocs/auth/auth_bloc.dart';
+import 'features/blocs/comment/comment_bloc.dart';
+import 'features/blocs/post/post_bloc.dart';
+import 'features/blocs/user/user_bloc.dart';
+import 'features/blocs/user/user_detail_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -145,11 +143,15 @@ Future<void> init() async {
   );
 
   // Data sources
-  sl.registerLazySingleton<AuthRemoteDataSource>(() => AuthRemoteDataSourceImpl(dio: sl()));
+  sl.registerLazySingleton<AuthRemoteDataSource>(
+    () => AuthRemoteDataSourceImpl(firestore: sl(), firebaseAuth: sl()),
+  ); // Add firebaseAuth
   sl.registerLazySingleton<AuthLocalDataSource>(() => AuthLocalDataSourceImpl(secureStorage: sl()));
-  sl.registerLazySingleton<PostRemoteDataSource>(() => PostRemoteDataSourceImpl(dio: sl()));
-  sl.registerLazySingleton<UserRemoteDataSource>(() => UserRemoteDataSourceImpl(dio: sl()));
-  sl.registerLazySingleton<CommentRemoteDataSource>(() => CommentRemoteDataSourceImpl(dio: sl()));
+  sl.registerLazySingleton<PostRemoteDataSource>(() => PostRemoteDataSourceImpl(firestore: sl()));
+  sl.registerLazySingleton<UserRemoteDataSource>(() => UserRemoteDataSourceImpl(firestore: sl()));
+  sl.registerLazySingleton<CommentRemoteDataSource>(
+    () => CommentRemoteDataSourceImpl(firestore: sl()),
+  );
   //! Core
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
 
@@ -162,32 +164,7 @@ Future<void> init() async {
   final logService = await LogService.instance();
   sl.registerLazySingleton<LogService>(() => logService);
 
-  sl.registerLazySingleton<Dio>(() {
-    final dio = Dio();
-    final flavor = FlavorService.instance.config;
-
-    dio.options.baseUrl = flavor.baseUrl;
-    dio.options.connectTimeout = Duration(seconds: flavor.requestTimeout);
-    dio.options.receiveTimeout = Duration(seconds: flavor.requestTimeout);
-
-    dio.interceptors.add(
-      InterceptorsWrapper(
-        onRequest: (options, handler) {
-          // sl<LogService>().d('Request: ${options.method} ${options.uri}');
-          return handler.next(options);
-        },
-        onResponse: (response, handler) {
-          // sl<LogService>().d('Response: ${response.statusCode} ${response.data}');
-          // sl<LogService>().d('Response: ${response.statusCode}');
-          return handler.next(response);
-        },
-        onError: (DioException e, handler) {
-          sl<LogService>().e('DioError: ${e.message}', error: e, stackTrace: e.stackTrace);
-          return handler.next(e);
-        },
-      ),
-    );
-
-    return dio;
-  });
+  //Firebase
+  sl.registerLazySingleton(() => FirebaseFirestore.instance);
+  sl.registerLazySingleton(() => FirebaseAuth.instance); // Register FirebaseAuth
 }

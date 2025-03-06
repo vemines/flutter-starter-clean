@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_starter_clean/features/auth/presentation/blocs/auth_bloc.dart';
 
 import '../configs/configs.dart';
+import '../features/blocs/auth/auth_bloc.dart';
 import '../injection_container.dart';
 import 'cubits/cubits.dart';
 import 'locale.dart';

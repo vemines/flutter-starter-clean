@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/pages/not_found_page.dart';
-import '../features/auth/presentation/blocs/auth_bloc.dart';
-import '../features/auth/presentation/pages/login_page.dart';
-import '../features/auth/presentation/pages/register_page.dart';
-import '../features/post/presentation/pages/bookmarked_posts_page.dart';
-import '../features/post/presentation/pages/post_detail_page.dart';
-import '../features/presentation/home/pages/home_page.dart';
-import '../features/user/presentation/pages/user_profile_page.dart';
+import '../features/blocs/auth/auth_bloc.dart';
+import '../features/pages/auth/login_page.dart';
+import '../features/pages/auth/register_page.dart';
+import '../features/pages/post/bookmarked_posts_page.dart';
+import '../features/pages/post/post_detail_page.dart';
+import '../features/pages/home/home_page.dart';
+import '../features/pages/user/user_profile_page.dart';
 import '../injection_container.dart';
 
 class Paths {

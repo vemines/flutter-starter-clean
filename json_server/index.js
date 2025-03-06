@@ -219,6 +219,7 @@ server.get('/api/v1/posts/:id/comments', (req, res) => {
   const postId = req.params.id;
   const page = parseInt(req.query._page) || 1;
   const limit = parseInt(req.query._limit) || 10;
+  const skip = parseInt(req.query._skip) || 0;
   const sortField = req.query._sort || 'updatedAt';
   const sortOrder = req.query._order || 'desc';
 
@@ -228,8 +229,8 @@ server.get('/api/v1/posts/:id/comments', (req, res) => {
   comments = _.orderBy(comments, [sortField], [sortOrder]);
 
   // Pagination
-  const startIndex = (page - 1) * limit;
-  const endIndex = page * limit;
+  const startIndex = (page - 1) * limit + skip;
+  const endIndex = startIndex + limit;
   comments = comments.slice(startIndex, endIndex);
 
   const commentsWithUserDetails = comments.map((comment) => {
@@ -251,13 +252,11 @@ server.patch('/api/v1/comments/:id', (req, res) => {
   const { userId, body } = req.body;
 
   const comment = router.db.get('comments').find({ id: commentId }).value();
-  console.log(commentId, userId, comment);
   if (!comment) {
     return res.status(404).jsonp({ error: 'Comment not found' });
   }
 
   if (comment.userId !== userId) {
-    console.log(comment.userId, userId);
     return res.status(403).jsonp({ error: 'Unauthorized: You can only edit your own comments' });
   }
 

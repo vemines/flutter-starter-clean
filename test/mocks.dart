@@ -1,52 +1,51 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_starter_clean/app/logs.dart';
 import 'package:flutter_starter_clean/core/errors/exceptions.dart';
 import 'package:flutter_starter_clean/core/errors/failures.dart';
 import 'package:flutter_starter_clean/core/network/network_info.dart';
 import 'package:flutter_starter_clean/core/usecase/params.dart';
-import 'package:flutter_starter_clean/features/auth/data/datasources/auth_local_data_source.dart';
-import 'package:flutter_starter_clean/features/auth/data/datasources/auth_remote_data_source.dart';
-import 'package:flutter_starter_clean/features/auth/data/models/auth_model.dart';
-import 'package:flutter_starter_clean/features/auth/domain/entities/auth_entity.dart';
-import 'package:flutter_starter_clean/features/auth/domain/repositories/auth_repository.dart';
-import 'package:flutter_starter_clean/features/auth/domain/usecases/get_logged_in_user_usecase.dart';
-import 'package:flutter_starter_clean/features/auth/domain/usecases/login_usecase.dart';
-import 'package:flutter_starter_clean/features/auth/domain/usecases/logout_usecase.dart';
-import 'package:flutter_starter_clean/features/auth/domain/usecases/register_usecase.dart';
-import 'package:flutter_starter_clean/features/auth/domain/usecases/update_password_usecase.dart';
-import 'package:flutter_starter_clean/features/comment/data/datasources/comment_remote_data_source.dart';
-import 'package:flutter_starter_clean/features/comment/data/models/comment_model.dart';
-import 'package:flutter_starter_clean/features/comment/domain/entities/comment_entity.dart';
-import 'package:flutter_starter_clean/features/comment/domain/repositories/comment_repository.dart';
-import 'package:flutter_starter_clean/features/comment/domain/usecases/add_comment_usecase.dart';
-import 'package:flutter_starter_clean/features/comment/domain/usecases/delete_comment_usecase.dart';
-import 'package:flutter_starter_clean/features/comment/domain/usecases/get_comments_by_post_id_usecase.dart';
-import 'package:flutter_starter_clean/features/comment/domain/usecases/update_comment_usecase.dart';
-import 'package:flutter_starter_clean/features/post/data/datasources/post_remote_data_source.dart';
-import 'package:flutter_starter_clean/features/post/data/models/post_model.dart';
-import 'package:flutter_starter_clean/features/post/domain/entities/post_entity.dart';
-import 'package:flutter_starter_clean/features/post/domain/repositories/post_repository.dart';
-import 'package:flutter_starter_clean/features/post/domain/usecases/create_post_usecase.dart';
-import 'package:flutter_starter_clean/features/post/domain/usecases/delete_post_usecase.dart';
-import 'package:flutter_starter_clean/features/post/domain/usecases/get_all_posts_usecase.dart';
-import 'package:flutter_starter_clean/features/post/domain/usecases/get_bookmarked_posts_usecase.dart';
-import 'package:flutter_starter_clean/features/post/domain/usecases/get_posts_by_user_id_usecase.dart';
-import 'package:flutter_starter_clean/features/post/domain/usecases/get_post_by_id_usecase.dart';
-import 'package:flutter_starter_clean/features/post/domain/usecases/search_posts_usecase.dart';
-import 'package:flutter_starter_clean/features/post/domain/usecases/update_post_usecase.dart';
-import 'package:flutter_starter_clean/features/user/data/datasources/user_remote_data_source.dart';
-import 'package:flutter_starter_clean/features/user/data/models/user_detail_model.dart';
-import 'package:flutter_starter_clean/features/user/data/models/user_model.dart';
-import 'package:flutter_starter_clean/features/user/domain/entities/user_detail_entity.dart';
-import 'package:flutter_starter_clean/features/user/domain/entities/user_entity.dart';
-import 'package:flutter_starter_clean/features/user/domain/repositories/user_repository.dart';
-import 'package:flutter_starter_clean/features/user/domain/usecases/bookmark_post_usecase.dart';
-import 'package:flutter_starter_clean/features/user/domain/usecases/get_all_users_usecase.dart';
-import 'package:flutter_starter_clean/features/user/domain/usecases/get_user_by_id_usecase.dart';
-import 'package:flutter_starter_clean/features/user/domain/usecases/get_user_detail_usecase.dart';
-import 'package:flutter_starter_clean/features/user/domain/usecases/update_friend_list_usecase.dart';
-import 'package:flutter_starter_clean/features/user/domain/usecases/update_user_usecase.dart';
+import 'package:flutter_starter_clean/features/datasources/auth/auth_local_data_source.dart';
+import 'package:flutter_starter_clean/features/datasources/auth/auth_remote_data_source.dart';
+import 'package:flutter_starter_clean/features/models/auth/auth_model.dart';
+import 'package:flutter_starter_clean/features/entities/auth/auth_entity.dart';
+import 'package:flutter_starter_clean/features/repositories/auth/auth_repository.dart';
+import 'package:flutter_starter_clean/features/usecases/auth/get_logged_in_user_usecase.dart';
+import 'package:flutter_starter_clean/features/usecases/auth/login_usecase.dart';
+import 'package:flutter_starter_clean/features/usecases/auth/logout_usecase.dart';
+import 'package:flutter_starter_clean/features/usecases/auth/register_usecase.dart';
+import 'package:flutter_starter_clean/features/usecases/auth/update_password_usecase.dart';
+import 'package:flutter_starter_clean/features/datasources/comment/comment_remote_data_source.dart';
+import 'package:flutter_starter_clean/features/models/comment/comment_model.dart';
+import 'package:flutter_starter_clean/features/entities/comment/comment_entity.dart';
+import 'package:flutter_starter_clean/features/repositories/comment/comment_repository.dart';
+import 'package:flutter_starter_clean/features/usecases/comment/add_comment_usecase.dart';
+import 'package:flutter_starter_clean/features/usecases/comment/delete_comment_usecase.dart';
+import 'package:flutter_starter_clean/features/usecases/comment/get_comments_by_post_id_usecase.dart';
+import 'package:flutter_starter_clean/features/usecases/comment/update_comment_usecase.dart';
+import 'package:flutter_starter_clean/features/datasources/post/post_remote_data_source.dart';
+import 'package:flutter_starter_clean/features/models/post/post_model.dart';
+import 'package:flutter_starter_clean/features/entities/post/post_entity.dart';
+import 'package:flutter_starter_clean/features/repositories/post/post_repository.dart';
+import 'package:flutter_starter_clean/features/usecases/post/create_post_usecase.dart';
+import 'package:flutter_starter_clean/features/usecases/post/delete_post_usecase.dart';
+import 'package:flutter_starter_clean/features/usecases/post/get_all_posts_usecase.dart';
+import 'package:flutter_starter_clean/features/usecases/post/get_bookmarked_posts_usecase.dart';
+import 'package:flutter_starter_clean/features/usecases/post/get_posts_by_user_id_usecase.dart';
+import 'package:flutter_starter_clean/features/usecases/post/get_post_by_id_usecase.dart';
+import 'package:flutter_starter_clean/features/usecases/post/search_posts_usecase.dart';
+import 'package:flutter_starter_clean/features/usecases/post/update_post_usecase.dart';
+import 'package:flutter_starter_clean/features/datasources/user/user_remote_data_source.dart';
+import 'package:flutter_starter_clean/features/models/user/user_detail_model.dart';
+import 'package:flutter_starter_clean/features/models/user/user_model.dart';
+import 'package:flutter_starter_clean/features/entities/user/user_detail_entity.dart';
+import 'package:flutter_starter_clean/features/entities/user/user_entity.dart';
+import 'package:flutter_starter_clean/features/repositories/user/user_repository.dart';
+import 'package:flutter_starter_clean/features/usecases/user/bookmark_post_usecase.dart';
+import 'package:flutter_starter_clean/features/usecases/user/get_all_users_usecase.dart';
+import 'package:flutter_starter_clean/features/usecases/user/get_user_by_id_usecase.dart';
+import 'package:flutter_starter_clean/features/usecases/user/get_user_detail_usecase.dart';
+import 'package:flutter_starter_clean/features/usecases/user/update_friend_list_usecase.dart';
+import 'package:flutter_starter_clean/features/usecases/user/update_user_usecase.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -118,8 +117,6 @@ class MockDeleteCommentUseCase extends Mock implements DeleteCommentUseCase {}
 
 class MockSharedPreferences extends Mock implements SharedPreferences {}
 
-class MockDio extends Mock implements Dio {}
-
 class MockInternetConnection extends Mock implements InternetConnection {}
 
 class MockFlutterSecureStorage extends Mock implements FlutterSecureStorage {}
@@ -138,7 +135,6 @@ final tAuthEntity = AuthEntity(
   fullName: 'Test User',
   userName: 'testuser',
   email: 'test@example.com',
-  secret: tSecret,
 );
 final tAuthModel = AuthModel.fromEntity(tAuthEntity);
 final tSecret = 'test_secret';
@@ -148,7 +144,7 @@ final tRegisterParams = RegisterParams(
   email: 'test@example.com',
 );
 final tLoginParams = LoginParams(
-  username: tRegisterParams.userName,
+  email: tRegisterParams.userName,
   password: tRegisterParams.password,
 );
 final tUpdateUserPasswordParams = UpdateUserPasswordParams(
@@ -241,7 +237,7 @@ final tAddCommentParams = AddCommentParams(
   body: 'Test Body',
 );
 //
-final tGetCommentsParams = GetCommentsParams(postId: tPostEntity.id, page: 1, limit: 10);
+final tGetCommentsParams = GetCommentsParams(postId: tPostEntity.id, page: 1, limit: 10, skip: 0);
 
 final tServerException = ServerException(message: 'ServerException', statusCode: -1);
 final tServerFailure = tServerException.toFailure();
