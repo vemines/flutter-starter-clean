@@ -1,14 +1,10 @@
 # flutter_starter_clean
 
+A Starter Project for develop Flutter.
+
 <!-- TODO: -->
 
-Add user rm datasource to auth rm datasource
-
 <!--  -->
-
-firebase emulators:start --import=./firebase --export-on-exit=./firebase
-
-A Starter Project for develop Flutter.
 
 ## Demo video
 
@@ -60,25 +56,30 @@ Can find relate package: cached_network_image, shared_preferences, go_router, in
 
 State manager: flutter_bloc, provider
 
-| Package                            | Description                                                                                                                                         |
-| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `go_router`                        | Declarative routing for Flutter.                                                                                                                    |
-| `flutter_bloc`                     | State management library built on top of `Stream`s and `Sink`s.                                                                                     |
-| `shared_preferences`               | Persistent key-value storage for simple data (e.g., user preferences).                                                                              |
-| `flutter_secure_storage`           | Secure storage for sensitive data (e.g., API tokens, user secrets).                                                                                 |
-| `get_it`                           | Service locator for dependency injection.                                                                                                           |
-| `dio`                              | Powerful HTTP client for making network requests.                                                                                                   |
-| `google_fonts`                     | Provide Google Fonts using in this app.                                                                                                             |
-| `equatable`                        | Simplifies value equality comparisons for classes.                                                                                                  |
-| `dartz`                            | Functional programming library providing features like `Either` for error handling.                                                                 |
-| `logger`                           | Logging library for debugging and monitoring application behavior.                                                                                  |
-| `cached_network_image`             | Library for efficiently caching and displaying images from the network.                                                                             |
-| `internet_connection_checker_plus` | Checks for internet connectivity.                                                                                                                   |
-| `path_provider`                    | Provides access to commonly used file system locations (documents directory, etc.). _(Note: `path_provider` versions < 2.1.5 did not support web.)_ |
-| `mocktail` (dev dependency)        | Mocking library for unit and widget testing.                                                                                                        |
-| `bloc_test` (dev dependency)       | Utilities for testing BLoCs.                                                                                                                        |
-| `flutter_lorem` (dev dependency)   | Library for generating lorem ipsum placeholder text for UI development.                                                                             |
-| `device_preview` (dev dependency)  | Library for help mock device size for develop ui                                                                                                    |
+| Package                            | Description                                                           |
+| ---------------------------------- | --------------------------------------------------------------------- |
+| `go_router`                        | Provides declarative routing.                                         |
+| `flutter_bloc`                     | Manages application state.                                            |
+| `shared_preferences`               | Stores simple data persistently (key-value).                          |
+| `flutter_secure_storage`           | Stores sensitive data securely.                                       |
+| `get_it`                           | Implements dependency injection (service locator).                    |
+| `dio`                              | Makes network requests (powerful HTTP client).                        |
+| `google_fonts`                     | Provides access to Google Fonts.                                      |
+| `equatable`                        | Simplifies value equality comparisons.                                |
+| `dartz`                            | Provides functional programming features (e.g., `Either`).            |
+| `provider`                         | Manages application state.                                            |
+| `logger`                           | Logs application behavior for debugging.                              |
+| `algoliasearch`                    | Handles searching for Firestore documents.                            |
+| `firebase_core`                    | Initializes Firebase.                                                 |
+| `firebase_auth`                    | Handles Firebase authentication.                                      |
+| `cloud_firestore`                  | Handles Firebase Firestore.                                           |
+| `cached_network_image`             | Caches and displays images from the network efficiently.              |
+| `internet_connection_checker_plus` | Checks for internet connectivity.                                     |
+| `path_provider`                    | Provides access to file system locations (documents directory, etc.). |
+| `mocktail` (dev dependency)        | Mocks objects for unit and widget testing.                            |
+| `bloc_test` (dev dependency)       | Provides utilities for testing BLoCs.                                 |
+| `flutter_lorem` (dev dependency)   | Generates lorem ipsum placeholder text.                               |
+| `device_preview` (dev dependency)  | Simulates device sizes for UI development.                            |
 
 ## Setup
 
@@ -119,18 +120,43 @@ State manager: flutter_bloc, provider
 
 ## Firebase
 
-1. **Run Firestore and Auth emulator (Make sure you install it)**
+1. **Delete firebase.json if it exist and run `flutterfire configure` for create file lib\firebase_options.dart**
+
+2. **Add emulator config to firebase.json**
+
+   ```json
+    "emulators": {
+       "firestore": {
+         "port": 8080
+       },
+       "ui": {
+         "enabled": true
+       },
+       "singleProjectMode": true,
+       "auth": {
+         "port": 9099
+       }
+     }
+   ```
+
+3. **Run Firestore and Auth emulator (Make sure you install firebase)**
 
    ```bash
    firebase emulators:start --import=./firebase --export-on-exit=./firebase
    ```
 
-2. **Generate data**
+4. **Generate firestore data**
 
-```bash
-cd firestore-gen
-node gen.js
-```
+   ```bash
+   cd firestore-utils
+   node gen.js
+   ```
+
+5. **Upload index to Algolia for search, make sure complete `.env` file from `.env sameple`**
+
+   ```bash
+   node algolia.js
+   ```
 
 ## App Structure
 
@@ -233,6 +259,8 @@ flutter test
 **This Code Write with "dart.lineLength": 100 Settings. Sorry if code weird after format files**
 
 **Please remove this in web/index.html if you develop on web**
+
+**Algoria Still index old value (300 create post from gen.js). New Post not searchable, test on emulator**
 
 ```html
 <style>
