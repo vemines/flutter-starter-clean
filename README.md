@@ -2,9 +2,11 @@
 
 <!-- TODO: -->
 
-firebase emulators:start --import=./firestore --export-on-exit=./firestore --log-level=error
+Add user rm datasource to auth rm datasource
 
 <!--  -->
+
+firebase emulators:start --import=./firebase --export-on-exit=./firebase
 
 A Starter Project for develop Flutter.
 
@@ -102,12 +104,6 @@ State manager: flutter_bloc, provider
 
     ```
 
-**Run Firestore (Make sure you install it)**
-
-    ```bash
-    firebase emulators:start --import=./firestore --export-on-exit=./firestore
-    ```
-
 4.  **Run the application (choose your flavor):**
 
         - **Development:**
@@ -120,6 +116,21 @@ State manager: flutter_bloc, provider
           `flutter run lib/main_production.dart
 
     Different`main*\*` files are used for different build configurations [flavors](lib/configs/flavor_config.dart).
+
+## Firebase
+
+1. **Run Firestore and Auth emulator (Make sure you install it)**
+
+   ```bash
+   firebase emulators:start --import=./firebase --export-on-exit=./firebase
+   ```
+
+2. **Generate data**
+
+```bash
+cd firestore-gen
+node gen.js
+```
 
 ## App Structure
 
@@ -220,3 +231,13 @@ flutter test
 ## Note
 
 **This Code Write with "dart.lineLength": 100 Settings. Sorry if code weird after format files**
+
+**Please remove this in web/index.html if you develop on web**
+
+```html
+<style>
+  .firebase-emulator-warning {
+    display: none !important;
+  }
+</style>
+```

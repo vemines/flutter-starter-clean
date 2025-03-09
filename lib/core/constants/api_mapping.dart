@@ -28,7 +28,7 @@ class PostApiMap {
 class CommentApiMap {
   static const String kId = 'id';
   static const String kPostId = 'postId';
-  static const String kUser = 'user';
+  static const String kUserId = 'userId';
   static const String kBody = 'body';
 }
 

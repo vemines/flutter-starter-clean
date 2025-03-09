@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "fir-learn-11af5"
-  }
+    "default": "local-firebase-7698b",
+    "dev": "local-firebase-7698b"
+  },
+  "targets": {},
+  "etags": {}
 }

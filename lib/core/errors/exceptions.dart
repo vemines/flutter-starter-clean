@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
+
 import '../constants/constants.dart';
 import 'failures.dart';
 
+part 'firebase_exception_handle.dart';
 part 'repository_exception_handle.dart';
 
 class ServerException implements Exception {

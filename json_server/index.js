@@ -365,6 +365,6 @@ server.post('/api/v1/posts', (req, res) => {
 
 server.use('/api/v1', router);
 
-server.listen(3000, () => {
-  console.log('JSON Server is running on http://localhost:3000');
+server.listen(8080, () => {
+  console.log('JSON Server is running on http://localhost:8080');
 });

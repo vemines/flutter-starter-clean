@@ -1,15 +1,38 @@
 {
   "emulators": {
     "firestore": {
-      "port": 3000
+      "port": 8080
     },
     "ui": {
       "enabled": true
     },
     "singleProjectMode": true,
     "auth": {
-      "port": 3001
+      "port": 9099
     }
   },
-  "projectId": null
+  "projectId": "local-firebase-7698b",
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "local-firebase-7698b",
+          "appId": "1:734104259600:android:aa1e5ff303afb2bce50e95",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "local-firebase-7698b",
+          "configurations": {
+            "android": "1:734104259600:android:aa1e5ff303afb2bce50e95",
+            "ios": "1:734104259600:ios:c33b1fcb820a8eb3e50e95",
+            "macos": "1:734104259600:ios:c33b1fcb820a8eb3e50e95",
+            "web": "1:734104259600:web:0958cd12e454031fe50e95",
+            "windows": "1:734104259600:web:82c73c742241eb94e50e95"
+          }
+        }
+      }
+    }
+  }
 }

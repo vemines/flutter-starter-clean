@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-extension DoubleWidgetExt on num {
+extension NumWidgetExt on num {
   // usage: 20.sb()
   Widget sbW() => SizedBox(width: toDouble());
   Widget sbH() => SizedBox(height: toDouble());

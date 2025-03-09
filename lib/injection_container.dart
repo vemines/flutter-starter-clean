@@ -1,51 +1,56 @@
-// lib/injection_container.dart
+import 'package:algoliasearch/algoliasearch_lite.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // Import FirebaseAuth
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/logs.dart';
+import 'core/constants/env.dart';
 import 'core/network/network_info.dart';
-
-import 'features/datasources/auth/auth_local_data_source.dart';
-import 'features/datasources/auth/auth_remote_data_source.dart';
-import 'features/datasources/comment/comment_remote_data_source.dart';
-import 'features/datasources/post/post_remote_data_source.dart';
-import 'features/datasources/user/user_remote_data_source.dart';
-import 'features/repositories/auth/auth_repository.dart';
-import 'features/repositories/comment/comment_repository.dart';
-import 'features/repositories/post/post_repository.dart';
-import 'features/repositories/user/user_repository.dart';
-import 'features/usecases/auth/get_logged_in_user_usecase.dart';
-import 'features/usecases/auth/login_usecase.dart';
-import 'features/usecases/auth/logout_usecase.dart';
-import 'features/usecases/auth/register_usecase.dart';
-import 'features/usecases/auth/update_password_usecase.dart';
-import 'features/usecases/comment/add_comment_usecase.dart';
-import 'features/usecases/comment/delete_comment_usecase.dart';
-import 'features/usecases/comment/get_comments_by_post_id_usecase.dart';
-import 'features/usecases/comment/update_comment_usecase.dart';
-import 'features/usecases/post/create_post_usecase.dart';
-import 'features/usecases/post/delete_post_usecase.dart';
-import 'features/usecases/post/get_all_posts_usecase.dart';
-import 'features/usecases/post/get_bookmarked_posts_usecase.dart';
-import 'features/usecases/post/get_post_by_id_usecase.dart';
-import 'features/usecases/post/get_posts_by_user_id_usecase.dart';
-import 'features/usecases/post/search_posts_usecase.dart';
-import 'features/usecases/post/update_post_usecase.dart';
-import 'features/usecases/user/bookmark_post_usecase.dart';
-import 'features/usecases/user/get_all_users_usecase.dart';
-import 'features/usecases/user/get_user_by_id_usecase.dart';
-import 'features/usecases/user/get_user_detail_usecase.dart';
-import 'features/usecases/user/update_friend_list_usecase.dart';
-import 'features/usecases/user/update_user_usecase.dart';
-import 'features/blocs/auth/auth_bloc.dart';
-import 'features/blocs/comment/comment_bloc.dart';
-import 'features/blocs/post/post_bloc.dart';
-import 'features/blocs/user/user_bloc.dart';
-import 'features/blocs/user/user_detail_bloc.dart';
+import 'core/services/algolia_service.dart';
+import 'features/auth/data/datasources/auth_local_data_source.dart';
+import 'features/auth/data/datasources/auth_remote_data_source.dart';
+import 'features/auth/data/repositories/auth_repository_impl.dart';
+import 'features/auth/domain/repositories/auth_repository.dart';
+import 'features/auth/domain/usecases/get_logged_in_user_usecase.dart';
+import 'features/auth/domain/usecases/login_usecase.dart';
+import 'features/auth/domain/usecases/logout_usecase.dart';
+import 'features/auth/domain/usecases/register_usecase.dart';
+import 'features/auth/domain/usecases/update_password_usecase.dart';
+import 'features/auth/presentation/blocs/auth_bloc.dart';
+import 'features/comment/data/datasources/comment_remote_data_source.dart';
+import 'features/comment/data/repositories/comment_repository_impl.dart';
+import 'features/comment/domain/repositories/comment_repository.dart';
+import 'features/comment/domain/usecases/add_comment_usecase.dart';
+import 'features/comment/domain/usecases/delete_comment_usecase.dart';
+import 'features/comment/domain/usecases/get_comments_by_post_id_usecase.dart';
+import 'features/comment/domain/usecases/update_comment_usecase.dart';
+import 'features/comment/presentation/blocs/comment_bloc.dart';
+import 'features/post/data/datasources/post_remote_data_source.dart';
+import 'features/post/data/repositories/post_repository_impl.dart';
+import 'features/post/domain/repositories/post_repository.dart';
+import 'features/post/domain/usecases/create_post_usecase.dart';
+import 'features/post/domain/usecases/delete_post_usecase.dart';
+import 'features/post/domain/usecases/get_all_posts_usecase.dart';
+import 'features/post/domain/usecases/get_bookmarked_posts_usecase.dart';
+import 'features/post/domain/usecases/get_post_by_id_usecase.dart';
+import 'features/post/domain/usecases/get_posts_by_user_id_usecase.dart';
+import 'features/post/domain/usecases/search_posts_usecase.dart';
+import 'features/post/domain/usecases/update_post_usecase.dart';
+import 'features/post/presentation/blocs/post_bloc.dart';
+import 'features/user/data/datasources/user_remote_data_source.dart';
+import 'features/user/data/repositories/user_repository_impl.dart';
+import 'features/user/domain/repositories/user_repository.dart';
+import 'features/user/domain/usecases/bookmark_post_usecase.dart';
+import 'features/user/domain/usecases/get_all_users_usecase.dart';
+import 'features/user/domain/usecases/get_user_by_id_usecase.dart';
+import 'features/user/domain/usecases/get_user_detail_usecase.dart';
+import 'features/user/domain/usecases/update_friend_list_usecase.dart';
+import 'features/user/domain/usecases/update_user_usecase.dart';
+import 'features/user/presentation/blocs/user_bloc.dart';
+import 'features/user/presentation/blocs/user_detail_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -72,6 +77,7 @@ Future<void> init() async {
       searchPosts: sl(),
       getBookmarkedPosts: sl(),
       getPostsByUserIdUseCase: sl(),
+      algoliaService: sl(),
       logService: sl(),
     ),
   );
@@ -85,7 +91,7 @@ Future<void> init() async {
       logService: sl(),
     ),
   );
-  sl.registerLazySingleton(() => UserDetailBloc(getUserDetailUseCase: sl(), logService: sl()));
+  sl.registerFactory(() => UserDetailBloc(getUserDetailUseCase: sl(), logService: sl()));
   sl.registerFactory(
     () => CommentBloc(
       addComment: sl(),
@@ -130,7 +136,13 @@ Future<void> init() async {
 
   // Repository
   sl.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(remoteDataSource: sl(), localDataSource: sl(), networkInfo: sl()),
+    () => AuthRepositoryImpl(
+      remoteDataSource: sl(),
+      localDataSource: sl(),
+      networkInfo: sl(),
+      firebaseAuth: sl(),
+      userRemoteDataSource: sl(),
+    ),
   );
   sl.registerLazySingleton<CommentRepository>(
     () => CommentRepositoryImpl(remoteDataSource: sl(), networkInfo: sl()),
@@ -165,6 +177,17 @@ Future<void> init() async {
   sl.registerLazySingleton<LogService>(() => logService);
 
   //Firebase
-  sl.registerLazySingleton(() => FirebaseFirestore.instance);
-  sl.registerLazySingleton(() => FirebaseAuth.instance); // Register FirebaseAuth
+  final firestore = FirebaseFirestore.instance..useFirestoreEmulator('localhost', 8080);
+
+  sl.registerLazySingleton(() => firestore);
+
+  final auth = FirebaseAuth.instance;
+  await auth.useAuthEmulator('localhost', 9099);
+  sl.registerLazySingleton(() => auth);
+
+  // Initialize Algolia
+  final algoliaClient = SearchClient(appId: ALGOLIA_APP_ID, apiKey: ALGOLIA_ADMIN_KEY);
+  final alogoliaService = AlgoliaServiceImpl(searchClient: algoliaClient);
+  // Register Algolia instance
+  sl.registerSingleton<AlgoliaService>(alogoliaService);
 }
