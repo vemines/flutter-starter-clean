@@ -50,3 +50,4 @@ app.*.map.json
 /lib/core/constants/env.dart
 /firebase.json
 /android/app/google-services.json
+/firebase_options.rar

@@ -2,10 +2,6 @@
 
 A Starter Project for develop Flutter.
 
-<!-- TODO: -->
-
-<!--  -->
-
 ## Demo video
 
  <video width="640" height="360" controls>
@@ -26,15 +22,18 @@ This project is a Flutter starter template implementing **Clean Architecture** w
 
 **[provider-layer-api.rar](lib/_variants/provider-layer-api.rar)**: State management: provider, folder structor: Layer base, Data source: Api (json server)
 
-**bloc/provider-feature/layer-firebase.rar**: Work in process
+**[bloc-feature-firebase.rar](lib/bloc-feature-firebase.rar)**: State management: bloc, folder structor: Features base, Data source: Firebase Firestore
+
+**[bloc-layer-firebase.rar](lib/bloc-layer-firebase.rar)**: State management: bloc, folder structor: Layer base, Data source: Firebase Firestore
+
+**[provider-feature-firebase.rar](lib/_variants/provider-feature-firebase.rar)**: State management: provider, folder structor: Features base, Firebase Firestore
+
+**[provider-layer-firebase.rar](lib/_variants/provider-layer-firebase.rar)**: State management: provider, folder structor: Layer base, Firebase Firestore
 
 ## How to use variants
 
-1. Make sure you have **DELETE ALL files/folders** in compressfile
-2. Copy to **lib**: Folder (**app, configs, core, features**), File (**injection_container.dart**)
-3. Copy to **root**: Folder(**test**)
-4. In **test** folder: Rename "flutter_starter_clean" to "your_project_package_name"
-5. Copy nessary package in **pubspec.yaml** to your "pubspec.yaml" file. Check [Packages Used](#packages-used).
+1. Copy to root: **lib**, **test**, and **pubspec.yaml**
+2. In **test** folder: Rename all "flutter_starter_clean" to "your_project_package_name"
 
 ## Process
 
@@ -90,13 +89,15 @@ State manager: flutter_bloc, provider
     cd flutter_starter_clean
     ```
 
-2.  **Install dependencies:**
+2.  **Choose Variants**
+
+3.  **Install dependencies:**
 
     ```bash
     flutter pub get
     ```
 
-3.  **Run json-server**
+4.  **Run json-server**
 
     ```bash
     cd json-server
@@ -105,7 +106,7 @@ State manager: flutter_bloc, provider
 
     ```
 
-4.  **Run the application (choose your flavor):**
+5.  **Run the application (choose your flavor):**
 
         - **Development:**
           flutter run lib/main_development.dart
@@ -258,9 +259,9 @@ flutter test
 
 **This Code Write with "dart.lineLength": 100 Settings. Sorry if code weird after format files**
 
-**Please remove this in web/index.html if you develop on web**
+**Algoria index old value (300 create post from gen.js). Listen new post is not work, test on emulator**
 
-**Algoria Still index old value (300 create post from gen.js). New Post not searchable, test on emulator**
+**Please remove this in web/index.html if you develop on web**
 
 ```html
 <style>
